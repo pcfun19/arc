@@ -21,8 +21,10 @@ import (
 var (
 	ErrBEEFVerificationFailed   = errors.New("BEEF verification failed")
 	ErrBEEFVerificationTimedOut = errors.New("BEEF verification timed out")
+
 	ErrRequestFailed            = errors.New("request failed")
 	ErrRequestTimedOut          = errors.New("request timed out")
+	ErrNoChainTrackersAvailable = errors.New("no chain trackers available")
 )
 
 type ChainTracker interface {
@@ -117,11 +119,11 @@ func (v *Validator) ValidateTransaction(ctx context.Context, beefTx *sdkTx.Beef,
 	verificationSuccessful, err = beefTx.Verify(ctx, v.chainTracker, false)
 	if err != nil {
 		if errors.Is(err, ErrRequestTimedOut) {
-			return nil, validator.NewError(errors.Join(ErrBEEFVerificationTimedOut, err), api.ErrStatusBeefValidationFailedBeefInvalid)
+			return nil, validator.NewError(errors.Join(ErrBEEFVerificationTimedOut, err), api.ErrStatusBeefValidationMerkleRoots)
 		}
 
 		if errors.Is(err, ErrRequestFailed) {
-			return nil, validator.NewError(errors.Join(ErrBEEFVerificationFailed, err), api.ErrStatusBeefValidationFailedBeefInvalid)
+			return nil, validator.NewError(errors.Join(ErrBEEFVerificationFailed, err), api.ErrStatusBeefValidationMerkleRoots)
 		}
 
 		return nil, validator.NewError(err, api.ErrStatusBeefValidationMerkleRoots)
