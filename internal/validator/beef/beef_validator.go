@@ -19,7 +19,10 @@ import (
 )
 
 var (
-	ErrBEEFVerificationFailed = errors.New("BEEF verification failed")
+	ErrBEEFVerificationFailed   = errors.New("BEEF verification failed")
+	ErrBEEFVerificationTimedOut = errors.New("BEEF verification timed out")
+	ErrRequestFailed            = errors.New("request failed")
+	ErrRequestTimedOut          = errors.New("request timed out")
 )
 
 type ChainTracker interface {
@@ -33,6 +36,7 @@ type Validator struct {
 	tracingEnabled    bool
 	tracingAttributes []attribute.KeyValue
 }
+
 type Option func(d *Validator)
 
 func WithTracer(attr ...attribute.KeyValue) func(s *Validator) {
@@ -108,14 +112,22 @@ func (v *Validator) ValidateTransaction(ctx context.Context, beefTx *sdkTx.Beef,
 		}
 	}
 
+	var verificationSuccessful bool
 	// verify with chain tracker
-	ok, err := beefTx.Verify(ctx, v.chainTracker, false)
+	verificationSuccessful, err = beefTx.Verify(ctx, v.chainTracker, false)
 	if err != nil {
-		vErr = validator.NewError(err, api.ErrStatusBeefValidationMerkleRoots)
-		return nil, vErr
+		if errors.Is(err, ErrRequestTimedOut) {
+			return nil, validator.NewError(errors.Join(ErrBEEFVerificationTimedOut, err), api.ErrStatusBeefValidationFailedBeefInvalid)
+		}
+
+		if errors.Is(err, ErrRequestFailed) {
+			return nil, validator.NewError(errors.Join(ErrBEEFVerificationFailed, err), api.ErrStatusBeefValidationFailedBeefInvalid)
+		}
+
+		return nil, validator.NewError(err, api.ErrStatusBeefValidationMerkleRoots)
 	}
 
-	if !ok {
+	if !verificationSuccessful {
 		return nil, validator.NewError(ErrBEEFVerificationFailed, api.ErrStatusBeefValidationFailedBeefInvalid)
 	}
 
