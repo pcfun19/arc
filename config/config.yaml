@@ -31,6 +31,7 @@ cache:
 metamorph:
   listenAddr: localhost:8001
   dialAddr: localhost:8001
+  hostname: arc-node
   db:
     mode: postgres
     postgres:
@@ -57,7 +58,7 @@ metamorph:
   reRegisterSeen: 10m
   monitorPeers: true
   health:
-    minimumHealthyConnections: 2
+    minimumHealthyConnections: 1
   rejectCallbackContaining: ["http://localhost", "https://localhost"]
   stats:
     notSeenTimeLimit: 10m
@@ -69,9 +70,15 @@ metamorph:
     - host: seed.bitcoinsv.io
       port:
         p2p: 8333
-    - host: node.bitcoinsv.io
+        zmq: 28332
+    - host: sv.satoshisvision.network
       port:
         p2p: 8333
+        zmq: 28332
+    - host: bsv.1209k.com
+      port:
+        p2p: 8333
+        zmq: 28332
 
 blocktx:
   listenAddr: localhost:8011
@@ -107,17 +114,23 @@ blocktx:
     - host: seed.bitcoinsv.io
       port:
         p2p: 8333
-    - host: node.bitcoinsv.io
+        zmq: 28332
+    - host: sv.satoshisvision.network
       port:
         p2p: 8333
+        zmq: 28332
+    - host: bsv.1209k.com
+      port:
+        p2p: 8333
+        zmq: 28332
 
 api:
   merkleRootVerification:
     timeout: 5s
     blockHeaderServices: []
   standardFormatSupported: true
-  address: :8080
-  listenAddr: localhost:8033
+  address: :9090
+  listenAddr: localhost:9090
   wocApiKey: ""
   wocMainnet: false
   requestExtendedLogs: true
@@ -158,6 +171,7 @@ k8sWatcher:
 callbacker:
   listenAddr: localhost:8021
   dialAddr: localhost:8021
+  hostname: arc-node
   pause: 1s
   batchSendInterval: 5s
   pruneOlderThan: 336h
