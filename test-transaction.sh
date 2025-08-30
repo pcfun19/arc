@@ -6,7 +6,7 @@ echo
 
 # Check if API is ready
 echo "Checking if ARC API is ready..."
-API_HEALTH=$(curl -s http://localhost:8080/health 2>/dev/null || echo "NOT_READY")
+API_HEALTH=$(curl -s http://localhost:9090/v1/health 2>/dev/null || echo "NOT_READY")
 if [[ "$API_HEALTH" == "NOT_READY" ]]; then
     echo "⚠️  API not ready yet. Waiting 5 seconds..."
     sleep 5
@@ -23,7 +23,7 @@ echo "Transaction hex (first 100 chars): ${TEST_TX:0:100}..."
 echo
 
 # Submit transaction to correct API endpoint
-RESPONSE=$(curl -s -X POST http://localhost:8080/v1/tx \
+RESPONSE=$(curl -s -X POST http://localhost:9090/v1/tx \
   -H "Content-Type: application/json" \
   -d "{\"rawTx\": \"$TEST_TX\"}")
 
