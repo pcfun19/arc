@@ -38,8 +38,8 @@ metamorph:
       host: localhost
       port: 5432
       name: metamorph
-      user: expertmac
-      password: ""
+      user: arc
+      password: "arc"
       maxIdleConns: 10
       maxOpenConns: 80
       sslMode: disable
@@ -89,8 +89,8 @@ blocktx:
       host: localhost
       port: 5432
       name: blocktx
-      user: expertmac
-      password: ""
+      user: arc
+      password: "arc"
       maxIdleConns: 10
       maxOpenConns: 80
       sslMode: disable
@@ -183,8 +183,8 @@ callbacker:
       host: localhost
       port: 5432
       name: callbacker
-      user: expertmac
-      password: ""
+      user: arc
+      password: "arc"
       maxIdleConns: 10
       maxOpenConns: 80
       sslMode: disable
