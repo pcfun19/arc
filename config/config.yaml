@@ -38,7 +38,7 @@ metamorph:
       host: localhost
       port: 5432
       name: metamorph
-      user: arc
+      user: expertmac
       password: ""
       maxIdleConns: 10
       maxOpenConns: 80
@@ -89,7 +89,7 @@ blocktx:
       host: localhost
       port: 5432
       name: blocktx
-      user: arc
+      user: expertmac
       password: ""
       maxIdleConns: 10
       maxOpenConns: 80
@@ -183,7 +183,7 @@ callbacker:
       host: localhost
       port: 5432
       name: callbacker
-      user: arc
+      user: expertmac
       password: ""
       maxIdleConns: 10
       maxOpenConns: 80
