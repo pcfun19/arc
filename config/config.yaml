@@ -1,0 +1,177 @@
+---
+logLevel: INFO
+logFormat: text
+profilerAddr: localhost:9999
+prometheus:
+  enabled: false
+  endpoint: /metrics
+  addr: :2112
+grpcMessageSize: 100000000
+network: mainnet
+messageQueue:
+  streaming:
+    enabled: true
+    fileStorage: false
+  URL: nats://localhost:4222
+  initialize: true
+reBroadcastExpiration: 24h
+
+tracing:
+  enabled: false
+
+peerRpc:
+  password: bitcoin
+  user: bitcoin
+  host: bsv.1209k.com
+  port: 8332
+
+cache:
+  engine: in-memory
+
+metamorph:
+  listenAddr: localhost:8001
+  dialAddr: localhost:8001
+  db:
+    mode: postgres
+    postgres:
+      host: localhost
+      port: 5432
+      name: metamorph
+      user: arc
+      password: ""
+      maxIdleConns: 10
+      maxOpenConns: 80
+      sslMode: disable
+  maxRetries: 1000
+  statusUpdateInterval: 5s
+  doubleSpendTxStatusOlderThanInterval: 10m
+  doubleSpendCheckInterval: 10s
+  reAnnounceUnseenInterval: 60s
+  reAnnounceSeen:
+    pendingSince: 10m
+    lastConfirmedAgo: 10m
+  rejectPendingSeen:
+    enabled: false
+    lastRequestedAgo: 10m
+    blocksSince: 3
+  reRegisterSeen: 10m
+  monitorPeers: true
+  health:
+    minimumHealthyConnections: 2
+  rejectCallbackContaining: ["http://localhost", "https://localhost"]
+  stats:
+    notSeenTimeLimit: 10m
+    notFinalTimeLimit: 20m
+  bcnet:
+    mode: classic
+    network: mainnet
+    peers:
+    - host: seed.bitcoinsv.io
+      port:
+        p2p: 8333
+    - host: node.bitcoinsv.io
+      port:
+        p2p: 8333
+
+blocktx:
+  listenAddr: localhost:8011
+  dialAddr: localhost:8011
+  db:
+    mode: postgres
+    postgres:
+      host: localhost
+      port: 5432
+      name: blocktx
+      user: arc
+      password: ""
+      maxIdleConns: 10
+      maxOpenConns: 80
+      sslMode: disable
+  recordRetentionDays: 28
+  registerTxsInterval: 10s
+  maxBlockProcessingDuration: 5m
+  monitorPeers: true
+  incomingIsLongest: false
+  fillGaps:
+    enabled: true
+    interval: 15m
+  unorphanRecentWrongOrphans:
+    enabled: false
+    interval: 5m
+  maxAllowedBlockHeightMismatch: 3
+  p2pReadBufferSize: 8388608
+  bcnet:
+    mode: classic
+    network: mainnet
+    peers:
+    - host: seed.bitcoinsv.io
+      port:
+        p2p: 8333
+    - host: node.bitcoinsv.io
+      port:
+        p2p: 8333
+
+api:
+  merkleRootVerification:
+    timeout: 5s
+    blockHeaderServices: []
+  standardFormatSupported: true
+  address: :8080
+  listenAddr: localhost:8033
+  wocApiKey: ""
+  wocMainnet: false
+  requestExtendedLogs: true
+  defaultPolicy:
+    excessiveblocksize: 2000000000
+    blockmaxsize: 512000000
+    maxtxsizepolicy: 100000000
+    maxorphantxsize: 1000000000
+    datacarriersize: 4294967295
+    maxscriptsizepolicy: 100000000
+    maxopsperscriptpolicy: 4294967295
+    maxscriptnumlengthpolicy: 10000
+    maxpubkeyspermultisigpolicy: 4294967295
+    maxtxsigopscountspolicy: 4294967295
+    maxstackmemoryusagepolicy: 100000000
+    maxstackmemoryusageconsensus: 200000000
+    limitancestorcount: 10000
+    limitcpfpgroupmemberscount: 25
+    maxmempool: 2000000000
+    maxmempoolsizedisk: 0
+    mempoolmaxpercentcpfp: 10
+    acceptnonstdoutputs: true
+    datacarrier: true
+    minminingtxfee: 1e-8
+    maxstdtxvalidationduration: 3
+    maxnonstdtxvalidationduration: 1000
+    maxtxchainvalidationbudget: 50
+    validationclockcpu: true
+    minconsolidationfactor: 20
+    maxconsolidationinputscriptsize: 150
+    minconfconsolidationinput: 6
+    minconsolidationinputmaturity: 6
+    acceptnonstdconsolidationinput: false
+
+k8sWatcher:
+  namespace: default
+
+callbacker:
+  listenAddr: localhost:8021
+  dialAddr: localhost:8021
+  pause: 1s
+  batchSendInterval: 5s
+  pruneOlderThan: 336h
+  pruneInterval: 24h
+  expiration: 24h
+  db:
+    mode: postgres
+    postgres:
+      host: localhost
+      port: 5432
+      name: callbacker
+      user: arc
+      password: ""
+      maxIdleConns: 10
+      maxOpenConns: 80
+      sslMode: disable
+
