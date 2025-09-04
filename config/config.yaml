@@ -22,7 +22,7 @@ tracing:
 peerRpc:
   password: bitcoin
   user: bitcoin
-  host: bsv.1209k.com
+  host: seed.bitcoinsv.io
   port: 8332
 
 cache:
@@ -79,6 +79,10 @@ metamorph:
       port:
         p2p: 8333
         zmq: 28332
+    - host: sv.satoshisvision.network
+      port:
+        p2p: 8333
+        zmq: 28332
 
 blocktx:
   listenAddr: localhost:8011
@@ -120,6 +124,10 @@ blocktx:
         p2p: 8333
         zmq: 28332
     - host: stn-seed.bitcoinsv.io
+      port:
+        p2p: 8333
+        zmq: 28332
+    - host: sv.satoshisvision.network
       port:
         p2p: 8333
         zmq: 28332
