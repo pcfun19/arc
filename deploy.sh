@@ -42,7 +42,7 @@ fi
 DEPLOY_USER=${SUDO_USER:-$(whoami)}
 echo "Using deploy user: $DEPLOY_USER"
 
-# Clone or update repo
+# Clone or update repo with SSH->HTTPS fallback for permission errors
 if [ -d "$DEST/.git" ]; then
   echo "Updating existing repo in $DEST"
   git -C "$DEST" fetch --all
@@ -51,7 +51,27 @@ if [ -d "$DEST/.git" ]; then
 else
   echo "Cloning repo to $DEST"
   mkdir -p "$DEST"
+  set +e
   git clone --branch "$BRANCH" "$GIT_URL" "$DEST"
+  GC_EXIT=$?
+  set -e
+  if [ $GC_EXIT -ne 0 ]; then
+    echo "Initial git clone failed (exit $GC_EXIT). Trying HTTPS fallback..."
+    # convert git@github.com:owner/repo.git to https://github.com/owner/repo.git
+    if echo "$GIT_URL" | grep -qE '^git@github.com:'; then
+      HTTPS_URL=$(echo "$GIT_URL" | sed -E 's#^git@github.com:(.+)#https://github.com/\1#')
+      echo "Retrying clone with $HTTPS_URL"
+      git clone --branch "$BRANCH" "$HTTPS_URL" "$DEST"
+      GC_EXIT2=$?
+      if [ $GC_EXIT2 -ne 0 ]; then
+        echo "HTTPS clone also failed (exit $GC_EXIT2). Aborting." >&2
+        exit 1
+      fi
+    else
+      echo "Clone failed and no SSH-style URL to fallback. Aborting." >&2
+      exit 1
+    fi
+  fi
   chown -R "$DEPLOY_USER":"$DEPLOY_USER" "$DEST"
 fi
 
@@ -71,6 +91,7 @@ fi
 echo "Building ARC..."
 cd "$DEST"
 sudo -u "$DEPLOY_USER" -H bash -c 'go build -o arc ./cmd/arc'
+
 
 # Create systemd service for nats
 echo "Creating systemd unit for nats..."
