@@ -71,14 +71,6 @@ metamorph:
       port:
         p2p: 8333
         zmq: 28332
-    - host: sv.satoshisvision.network
-      port:
-        p2p: 8333
-        zmq: 28332
-    - host: bsv.1209k.com
-      port:
-        p2p: 8333
-        zmq: 28332
 
 blocktx:
   listenAddr: localhost:8011
@@ -115,22 +107,14 @@ blocktx:
       port:
         p2p: 8333
         zmq: 28332
-    - host: sv.satoshisvision.network
-      port:
-        p2p: 8333
-        zmq: 28332
-    - host: bsv.1209k.com
-      port:
-        p2p: 8333
-        zmq: 28332
 
 api:
   merkleRootVerification:
     timeout: 5s
     blockHeaderServices: []
   standardFormatSupported: true
-  address: :9091
-  listenAddr: localhost:9091
+  address: :9090
+  listenAddr: localhost:8033
   wocApiKey: ""
   wocMainnet: false
   requestExtendedLogs: true
