@@ -117,7 +117,7 @@ func StartCallbacker(logger *slog.Logger, arcConfig *config.ArcConfig) (func(), 
 		PrometheusEndpoint: arcConfig.Prometheus.Endpoint,
 		MaxMsgSize:         arcConfig.GrpcMessageSize,
 		TracingConfig:      arcConfig.Tracing,
-		Name:               "blocktx",
+		Name:               "callbacker",
 	}
 
 	server, err = callbacker.NewServer(logger, dispatcher, callbackerStore, mqClient, serverCfg)
