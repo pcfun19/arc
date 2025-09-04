@@ -71,6 +71,14 @@ metamorph:
       port:
         p2p: 8333
         zmq: 28332
+    - host: node.bitcoinsv.io
+      port:
+        p2p: 8333
+        zmq: 28332
+    - host: stn-seed.bitcoinsv.io
+      port:
+        p2p: 8333
+        zmq: 28332
 
 blocktx:
   listenAddr: localhost:8011
@@ -104,6 +112,14 @@ blocktx:
     network: mainnet
     peers:
     - host: seed.bitcoinsv.io
+      port:
+        p2p: 8333
+        zmq: 28332
+    - host: node.bitcoinsv.io
+      port:
+        p2p: 8333
+        zmq: 28332
+    - host: stn-seed.bitcoinsv.io
       port:
         p2p: 8333
         zmq: 28332
