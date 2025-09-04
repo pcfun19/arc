@@ -35,14 +35,14 @@ metamorph:
   db:
     mode: postgres
     postgres:
-      host: localhost
-      port: 5432
-      name: metamorph
-      user: arc
-      password: "arc"
-      maxIdleConns: 10
-      maxOpenConns: 80
-      sslMode: disable
+  host: ""
+  port: 5432
+  name: ""
+  user: ""
+  password: ""
+  maxIdleConns: 10
+  maxOpenConns: 80
+  sslMode: "require"
   maxRetries: 1000
   statusUpdateInterval: 5s
   doubleSpendTxStatusOlderThanInterval: 10m
@@ -86,14 +86,14 @@ blocktx:
   db:
     mode: postgres
     postgres:
-      host: localhost
-      port: 5432
-      name: blocktx
-      user: arc
-      password: "arc"
-      maxIdleConns: 10
-      maxOpenConns: 80
-      sslMode: disable
+  host: ""
+  port: 5432
+  name: ""
+  user: ""
+  password: ""
+  maxIdleConns: 10
+  maxOpenConns: 80
+  sslMode: "require"
   recordRetentionDays: 28
   registerTxsInterval: 10s
   maxBlockProcessingDuration: 5m
@@ -180,12 +180,12 @@ callbacker:
   db:
     mode: postgres
     postgres:
-      host: localhost
-      port: 5432
-      name: callbacker
-      user: arc
-      password: "arc"
-      maxIdleConns: 10
-      maxOpenConns: 80
-      sslMode: disable
+  host: ""
+  port: 5432
+  name: ""
+  user: ""
+  password: ""
+  maxIdleConns: 10
+  maxOpenConns: 80
+  sslMode: "require"
 
