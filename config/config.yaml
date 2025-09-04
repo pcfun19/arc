@@ -4,7 +4,7 @@ logFormat: text
 profilerAddr: localhost:9999
 prometheus:
   enabled: false
-  endpoint: /metrics
+  endpoint: ""
   addr: :2112
 grpcMessageSize: 100000000
 network: mainnet
