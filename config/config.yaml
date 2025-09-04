@@ -35,14 +35,14 @@ metamorph:
   db:
     mode: postgres
     postgres:
-  host: ""
-  port: 5432
-  name: ""
-  user: ""
-  password: ""
-  maxIdleConns: 10
-  maxOpenConns: 80
-  sslMode: "require"
+      host: aws-1-eu-central-2.pooler.supabase.com
+      port: 5432
+      name: postgres
+      user: postgres.rhttxtuifupiljzekuen
+      password: DCa3ZcumzPmMQC0h
+      maxIdleConns: 10
+      maxOpenConns: 80
+      sslMode: "disable"
   maxRetries: 1000
   statusUpdateInterval: 5s
   doubleSpendTxStatusOlderThanInterval: 10m
@@ -86,14 +86,14 @@ blocktx:
   db:
     mode: postgres
     postgres:
-  host: ""
-  port: 5432
-  name: ""
-  user: ""
-  password: ""
-  maxIdleConns: 10
-  maxOpenConns: 80
-  sslMode: "require"
+      host: aws-1-eu-central-2.pooler.supabase.com
+      port: 5432
+      name: postgres
+      user: postgres.rhttxtuifupiljzekuen
+      password: DCa3ZcumzPmMQC0h
+      maxIdleConns: 10
+      maxOpenConns: 80
+      sslMode: "disable"
   recordRetentionDays: 28
   registerTxsInterval: 10s
   maxBlockProcessingDuration: 5m
@@ -129,8 +129,8 @@ api:
     timeout: 5s
     blockHeaderServices: []
   standardFormatSupported: true
-  address: :9090
-  listenAddr: localhost:9090
+  address: :9091
+  listenAddr: localhost:9091
   wocApiKey: ""
   wocMainnet: false
   requestExtendedLogs: true
@@ -180,12 +180,12 @@ callbacker:
   db:
     mode: postgres
     postgres:
-  host: ""
-  port: 5432
-  name: ""
-  user: ""
-  password: ""
-  maxIdleConns: 10
-  maxOpenConns: 80
-  sslMode: "require"
+      host: aws-1-eu-central-2.pooler.supabase.com
+      port: 5432
+      name: postgres
+      user: postgres.rhttxtuifupiljzekuen
+      password: DCa3ZcumzPmMQC0h
+      maxIdleConns: 10
+      maxOpenConns: 80
+      sslMode: "disable"
 
