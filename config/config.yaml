@@ -59,7 +59,7 @@ metamorph:
   monitorPeers: true
   health:
     minimumHealthyConnections: 1
-  rejectCallbackContaining: ["http://localhost", "https://localhost"]
+  rejectCallbackContaining: []
   stats:
     notSeenTimeLimit: 10m
     notFinalTimeLimit: 20m
