@@ -77,6 +77,7 @@ type Processor struct {
 	maxRetries                int
 	minimumHealthyConnections int
 	callbackSender            CallbackSender
+	trackOnly                 bool
 
 	responseProcessor *ResponseProcessor
 	statusMessageCh   chan *metamorph_p2p.TxStatusMessage
@@ -772,19 +773,21 @@ func (p *Processor) ProcessTransaction(ctx context.Context, req *ProcessorReques
 	}
 
 	// ask network about the tx to see if they have it
-	p.bcMediator.AskForTxAsync(ctx, req.Data)
-	p.bcMediator.AnnounceTxAsync(ctx, req.Data)
+	if !p.trackOnly { // Only broadcast if not in TrackOnly mode
+		p.bcMediator.AskForTxAsync(ctx, req.Data)
+		p.bcMediator.AnnounceTxAsync(ctx, req.Data)
 
-	// update status in response
-	statusResponse.UpdateStatus(StatusAndError{
-		Status: metamorph_api.Status_ANNOUNCED_TO_NETWORK,
-	})
+		// update status in response
+		statusResponse.UpdateStatus(StatusAndError{
+			Status: metamorph_api.Status_ANNOUNCED_TO_NETWORK,
+		})
 
-	// update status in storage
-	p.storageStatusUpdateCh <- store.UpdateStatus{
-		Hash:      *req.Data.Hash,
-		Status:    metamorph_api.Status_ANNOUNCED_TO_NETWORK,
-		Timestamp: p.now(),
+		// update status in storage
+		p.storageStatusUpdateCh <- store.UpdateStatus{
+			Hash:      *req.Data.Hash,
+			Status:    metamorph_api.Status_ANNOUNCED_TO_NETWORK,
+			Timestamp: p.now(),
+		}
 	}
 }
 
@@ -815,13 +818,14 @@ func (p *Processor) ProcessTransactions(ctx context.Context, sReq []*store.Data)
 			p.logger.Error("Failed to register tx in blocktx", slog.String("hash", data.Hash.String()), slog.String("err", err.Error()))
 		}
 
-		p.bcMediator.AnnounceTxAsync(ctx, data)
-
-		// update status in storage
-		p.storageStatusUpdateCh <- store.UpdateStatus{
-			Hash:      *data.Hash,
-			Status:    metamorph_api.Status_ANNOUNCED_TO_NETWORK,
-			Timestamp: p.now(),
+		if !p.trackOnly { // no broadcast or status advance when track only
+			p.bcMediator.AnnounceTxAsync(ctx, data)
+			// update status in storage
+			p.storageStatusUpdateCh <- store.UpdateStatus{
+				Hash:      *data.Hash,
+				Status:    metamorph_api.Status_ANNOUNCED_TO_NETWORK,
+				Timestamp: p.now(),
+			}
 		}
 	}
 }

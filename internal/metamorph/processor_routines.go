@@ -23,6 +23,9 @@ var (
 
 // ReAnnounceUnseen re-broadcasts transactions with status lower than SEEN_ON_NETWORK
 func ReAnnounceUnseen(ctx context.Context, p *Processor) []attribute.KeyValue {
+	if p.trackOnly { // tracking only: skip rebroadcast
+		return []attribute.KeyValue{attribute.Int("announced", 0), attribute.Int("requested", 0)}
+	}
 	// define from what point in time we are interested in unmined transactions
 	getUnseenSince := p.now().Add(-1 * p.rebroadcastExpiration)
 	var offset int64
@@ -151,6 +154,9 @@ func RejectUnconfirmedRequested(ctx context.Context, p *Processor) []attribute.K
 
 // ReAnnounceSeen re-broadcasts and re-requests SEEN_ON_NETWORK transactions that have been pending
 func ReAnnounceSeen(ctx context.Context, p *Processor) []attribute.KeyValue {
+	if p.trackOnly { // do not re-announce in track-only
+		return []attribute.KeyValue{attribute.Int("announced", 0)}
+	}
 	var offset int64
 	var totalSeenOnNetworkTxs int
 	var pendingSeen []*store.Data
@@ -174,12 +180,13 @@ func ReAnnounceSeen(ctx context.Context, p *Processor) []attribute.KeyValue {
 
 		// re-announce transactions
 		for i, tx := range pendingSeen {
-			p.logger.Debug("Re-announcing seen tx", slog.String("hash", tx.Hash.String()))
-			p.bcMediator.AskForTxAsync(ctx, tx)
+			if !p.trackOnly { // only perform network operations when not in track-only
+				p.logger.Debug("Re-announcing seen tx", slog.String("hash", tx.Hash.String()))
+				p.bcMediator.AskForTxAsync(ctx, tx)
 
-			p.logger.Debug("Re-requesting seen tx", slog.String("hash", tx.Hash.String()))
-			p.bcMediator.AnnounceTxAsync(ctx, tx)
-
+				p.logger.Debug("Re-requesting seen tx", slog.String("hash", tx.Hash.String()))
+				p.bcMediator.AnnounceTxAsync(ctx, tx)
+			}
 			hashes[i] = tx.Hash
 		}
 
@@ -202,6 +209,9 @@ func ReAnnounceSeen(ctx context.Context, p *Processor) []attribute.KeyValue {
 
 // RegisterSeenTxs re-registers and SEEN_ON_NETWORK transactions
 func RegisterSeenTxs(ctx context.Context, p *Processor) []attribute.KeyValue {
+	if p.trackOnly { // still allow status registration? In track-only skip re-register to avoid network side-effects
+		return []attribute.KeyValue{attribute.Int("registered", 0)}
+	}
 	var offset int64
 	var totalSeenOnNetworkTxs int
 	var seenOnNetworkTxs []*store.Data

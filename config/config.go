@@ -89,6 +89,7 @@ type MetamorphConfig struct {
 	ListenAddr                           string                               `mapstructure:"listenAddr"`
 	DialAddr                             string                               `mapstructure:"dialAddr"`
 	Db                                   *DbConfig                            `mapstructure:"db"`
+	TrackOnly                            bool                                 `mapstructure:"trackOnly"`
 	ReAnnounceUnseenInterval             time.Duration                        `mapstructure:"reAnnounceUnseenInterval"`
 	ReAnnounceSeen                       *ReAnnounceSeenConfig                `mapstructure:"reAnnounceSeen"`
 	RejectPendingSeen                    *RejectPendingSeenConfig             `mapstructure:"rejectPendingSeen"`

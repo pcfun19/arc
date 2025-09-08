@@ -199,3 +199,12 @@ func WithRegisterBatchSizeDefault(size int) func(*Processor) {
 		p.registerBatchSize = size
 	}
 }
+
+// WithTrackOnly configures processor to only track transactions without announcing/broadcasting them.
+// When enabled Metamorph will accept submissions, store them, register with blocktx, listen for status
+// updates (e.g. from ZMQ / peers) but will NOT send P2P inv/getdata announcements or re-announce cycles.
+func WithTrackOnly(trackOnly bool) func(*Processor) {
+	return func(p *Processor) {
+		p.trackOnly = trackOnly
+	}
+}

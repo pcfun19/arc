@@ -48,6 +48,7 @@ metamorph:
   doubleSpendTxStatusOlderThanInterval: 10m
   doubleSpendCheckInterval: 10s
   reAnnounceUnseenInterval: 60s
+  trackOnly: true
   reAnnounceSeen:
     pendingSince: 10m
     lastConfirmedAgo: 10m
